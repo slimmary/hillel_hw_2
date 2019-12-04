@@ -16,7 +16,7 @@ if ask == 1:  # calc
     oper2 = foo_input_oper()  # second operation
     e = foo_input_float('третье число')  # third numb
     res_all = operations[oper2](res,e)  # result
-    print(f'({a} {oper} {b}) {oper2} {e} = {res_all}')
+    print('({} {} {}) {} {} = {}'.format(a,oper,b,oper2,e,res_all))
 else:  # date calc
     f_date = foo_date_input('первую')  # first date
     i = 5
@@ -24,11 +24,11 @@ else:  # date calc
         s_date = foo_date_input('вторую')  # second date
         if s_date > f_date:
             i -= 1
-            print(f'для вычисления разницы дат, вторая дата должна быть раньше первой, повторите ввод второй даты, осталось {i} попыток')
+            print('для вычисления разницы дат, вторая дата должна быть раньше первой, повторите ввод второй даты, осталось {} попыток'.format(i))
         else:
             i = 0
             delta = f_date - s_date
-            print(f' между {s_date} и {f_date} прошло {delta.days} дней')
+            print(' между {} и {} прошло {} дней'.format(s_date,f_date,delta.days))
 
 # 2. without asking
 i = 5
@@ -39,13 +39,12 @@ while i != 0:
         s_date = foo_date_input('вторую')  # second date
         if s_date > f_date:
             i -= 1
-            print(
-                f'для вычисления разницы дат, вторая дата должна быть раньше первой, повторите, осталось {i} попытки')
+            print('для вычисления разницы дат, вторая дата должна быть раньше первой, повторите, осталось {} попытки'.format(i))
         else:
             i = 0
             delta = f_date - s_date
-            print(f' между {s_date} и {f_date} прошло {delta.days} дней')
-    else: # if not date using simple_eval
+            print(' между {} и {} прошло {} дней'.format(s_date,f_date,delta.days))
+    else:  # if not date using simple_eval
         try:
             res = simple_eval(user_srt)
             i = 0
