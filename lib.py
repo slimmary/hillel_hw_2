@@ -75,4 +75,4 @@ def check_date_str(user_srt):
             date_us = datetime.strptime(user_srt, '%d.%m.%y').date()
             return date_us
         except:
-            pass
+            return None
