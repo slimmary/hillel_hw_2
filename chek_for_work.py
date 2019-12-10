@@ -191,14 +191,14 @@ def check_sim_numb(name):
             if not sim_numb.isnumeric() or len(sim_numb) != 11:
                 print('Допустимі тільки цифри та кількість 11')
             else:
-                return '+3{}'.format(sim_numb)
+                return '+{}'.format(sim_numb)
         else:
             msg = 'Введіть номер sim (9 цифр)'
             sim_numb = input(msg)
             if not sim_numb.isnumeric() or len(sim_numb) != 9:
                 print('Допустимі тільки цифри та кількість 9')
             else:
-                return '+{}'.format(sim_numb)
+                return '+380{}'.format(sim_numb)
 
 
 def check_fls_mark():
@@ -220,12 +220,12 @@ def check_fls_numb():
             return fls_numb
 
 
-def check_rate_price():
+def check_price(name,purpose):
     while True:
         try:
-            rate_price = int(input('Введіть вартість тарифу за місяць'))
-            if rate_price > 0:
-                return rate_price
+            price = int(input('Введіть {} вартість {}'.format(purpose,name)))
+            if price > 0:
+                return price
             else:
                 print('Вартість не може бути менше 0')
         except:
