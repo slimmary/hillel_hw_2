@@ -51,13 +51,11 @@ class Equipment:  # класс оборудование, комплектующ�
 class Rate(Equipment):  # класс тарифов абон.платы
 
     def __init__(self, name='Тариф абон.плати'):  # создание тарифа
-        rate_dict = {}
         self._rate_name = input('Введіть назву тарифу')
         super().__init__(name)
-        rate_dict[self._rate_name] = self._price_client
 
     def __str__(self):
-        return '{} {} вартість - {}грн./міс.'.format(self._name,self._rate_name,self._price)
+        return '{} {} вартість - {}грн./міс.'.format(self._name,self._rate_name,self._price,)
 
 
 class GpsRec(Equipment):
