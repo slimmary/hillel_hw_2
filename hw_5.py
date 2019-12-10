@@ -10,7 +10,7 @@ from chek_for_work import check_name_sim   # проверка допустимы
 from chek_for_work import check_sim_numb  # в зависимости от оператора проверка формата номера
 from chek_for_work import check_fls_mark   # проверка маркировки Датчика Уровня Топлива (маркировка по виду и длинне)
 from chek_for_work import check_fls_numb   # проверка номера ДУТ
-from chek_for_work import check_rate_price   # проверка тарифа ( цифра и больше 0)
+from chek_for_work import check_price   # проверка тарифа ( цифра и больше 0)
 
 
 class Client:
@@ -44,24 +44,40 @@ class Client:
 class Equipment:  # класс оборудование, комплектующие и услуги
     def __init__(self, name):
         self._name = name
-        self._price = input('Введіть внутрішню вартість {}'.format(name))  # внутренняя цена
-        self._price_client = input('Введіть вартість для клієнта {}'.format(name))  # цена для клиента
+        self._price = check_price('внутрішню', self._name)  # внутренняя цена
+        self._price_client = check_price('для клієнта', self._name)  # цена для клиента
+
+
+class Rate(Equipment):  # класс тарифов абон.платы
+
+    def __init__(self, name='Тариф абон.плати'):  # создание тарифа
+        rate_dict = {}
+        self._rate_name = input('Введіть назву тарифу')
+        super().__init__(name)
+        rate_dict[self._rate_name] = self._price_client
+
+    def __str__(self):
+        return '{} {} вартість - {}грн./міс.'.format(self._name,self._rate_name,self._price)
 
 
 class GpsRec(Equipment):
     def __init__(self, name='Реєстратор'):  # создание регистратора
-        super().__init__(name)
         self._gps_name = check_name_gps()  # название произвоителя регистратора
         self._gps_numb = check_gps_rec_numb(self._gps_name)  # в зависимости от производителя номер регистратора
+        super().__init__(name)
         self._sim = []  # хранилище присвоенных сим-карт
         self._rate = 0  # по умолчанию регистратор без присвоенного тарифа
         self._vehicle = self._gps_numb
         self._fls = []
 
     def add_sim(self, sim):  # присвоение сим карты( добавляем в список)
+        if not isinstance(sim,SimCards):
+            print('Ви намагаєтесь доати не існюучу сім-карту')
         return self._sim.append(sim._numb)
 
     def del_sim(self, sim):  # удаление сим-карты при замене, например
+        if not isinstance(sim, SimCards):
+            print('Ви намагаєтесь додати не існюучу сім-карту')
         return self._sim.remove(sim._numb)
 
     def add_rate(self,rate):
@@ -86,15 +102,15 @@ class GpsRec(Equipment):
         self._vehicle = self._gps_numb
         return self._vehicle
 
-    def add_fls(self, fls):
+    def add_fls(self, fls):  # присвоение ДУТ
         return self._fls.append(str(fls))
 
-    def del_fls(self, fls):
+    def del_fls(self, fls):  # удаление ДУТ
         return self._fls.remove(fls)
 
     def __str__(self):
         return '{} {} № {} \nсім-картки в реєстраторі:{}\nреєстратор встановлений на TЗ:{} ' \
-               '\nдодаткове обладнання: {}'.format(self._name, self._gps_name, self._gps_numb, "; " .join(self._sim), str(self._vehicle), "; ".join(self._fls))
+               '\nдодаткове обладнання: {}'.format(self._name, self._gps_name, self._gps_numb, "; " .join(self._sim), self._vehicle, "; ".join(self._fls))
 
 
 class FuelLevelSens(Equipment):  # создание датчика уровня топлива
@@ -117,38 +133,32 @@ class SimCards:
         return 'Сім-картка оператор {} номер {}'.format(self._name,self._numb)
 
 
-class Rate:  # класс тарифов абон.платы для клиента
-    def __init__(self):
-        self._name = input('Введіть назву тарифу')
-        self._price = check_rate_price()   # проверка что бы тариф был числом и не меньше 0
-
-    def __str__(self):
-        return 'Тариф {} вартість - {}грн./міс.'.format(self._name,self._price)
-
-
 class Vehicle:  # класс транспортных средств
     def __init__(self):
         self._type = input('Введіть тип транспортного засобу (ТЗ), наприклад: трактор, легкове авто, тягач тощо')
         self._brand_model = input('Введіть марку/модель ТЗ')
         self._id = input('Введіть державний номер ТЗ або ідентифікатор')
 
+    def __str__(self):
+        return '{} {} державний номер {}'.format(self._type,self._brand_model,self._id)
+
 
 sim1 = SimCards()
 sim2 = SimCards()
 rate1 = Rate()
 rate2 = Rate()
-fls1 = FuelLevelSens()
+# fls1 = FuelLevelSens()
 car1 = Vehicle()
 gps1 = GpsRec()
 gps1.add_sim(sim1)
 gps1.add_sim(sim2)
 gps1.add_rate(rate1)
 gps1.add_rate(rate2)
-gps1.add_fls(fls1)
+# gps1.add_fls(fls1)
 gps1.add_vehicle(car1)
 
 
 print(gps1)
-client1 = Client()
-client1.add_gps_rec(gps1)
-print(client1)
+# client1 = Client()
+# client1.add_gps_rec(gps1)
+# print(client1)
